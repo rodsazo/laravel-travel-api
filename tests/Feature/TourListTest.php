@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Travel;
+use App\Models\Tour;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -15,20 +17,15 @@ class TourListTest extends TestCase
     public function test_tours_list_by_travel_slug_returns_correct_tours(): void
     {
         $travel = Travel::factory()->create(['name' => 'Test Travel','slug' => 'test-travel']);
-        $tour = $travel->tours()->create([
-            'name' => 'Test Travel By Night',
-            'price' => 249.99,
-            'starting_date' => '2023-12-12',
-            'ending_date'=> '2023-12-15'
+        $tour = Tour::factory()->create([
+            'travel_id' => $travel->id
         ]);
 
         $response = $this->get('/api/v1/travels/' . $travel->slug . '/tours');
 
         $response->assertStatus(200);
-
+        $response->assertJsonCount(1, 'data');
         $response->assertJsonFragment(['id' => $tour->id ]);
-
-        $response->assertStatus(200);
     }
 
     public function test_tour_price_is_shown_correctly(){
