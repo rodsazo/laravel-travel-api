@@ -5,25 +5,13 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Resources\TourResource;
 use App\Models\Travel;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TourListRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class TourController extends Controller
 {
-    public function index( Travel $travel, Request $request ) {
-
-        $request->validate([
-            'priceFrom' => 'numeric',
-            'priceTo'=> 'numeric',
-            'dateFrom' => 'date',
-            'dateTo' => 'date',
-            'sortBy' => Rule::in(['price']),
-            'sortOrder' => Rule::in(['asc', 'desc'])
-        ],[
-            'sortBy' => 'The "sortBy" parameter accepts only the "price" value',
-            'sortOrder' => 'The "sortOrder" parameter accepts only "asc" or "desc"'
-        ]);
-
+    public function index( Travel $travel, TourListRequest $request ) {
 
 
         $tours = $travel->tours()
