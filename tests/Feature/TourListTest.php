@@ -29,7 +29,17 @@ class TourListTest extends TestCase
     }
 
     public function test_tour_price_is_shown_correctly(){
+        $travel = Travel::factory()->create();
+        Tour::factory()->create([
+            'travel_id' => $travel->id,
+            'price' => 223.56
+        ]);
 
+        $response = $this->get('/api/v1/travels/' . $travel->slug . '/tours');
+
+        $response->assertStatus(200);
+        $response->assertJsonCount(1, 'data');
+        $response->assertJsonFragment(['price' => 223.56]);
     }
 
     public function test_tours_list_returns_pagination(){
