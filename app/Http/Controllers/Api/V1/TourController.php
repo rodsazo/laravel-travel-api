@@ -6,10 +6,26 @@ use App\Http\Resources\TourResource;
 use App\Models\Travel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class TourController extends Controller
 {
     public function index( Travel $travel, Request $request ) {
+
+        $request->validate([
+            'priceFrom' => 'numeric',
+            'priceTo'=> 'numeric',
+            'dateFrom' => 'date',
+            'dateTo' => 'date',
+            'sortBy' => Rule::in(['price']),
+            'sortOrder' => Rule::in(['asc', 'desc'])
+        ],[
+            'sortBy' => 'The "sortBy" parameter accepts only the "price" value',
+            'sortOrder' => 'The "sortOrder" parameter accepts only "asc" or "desc"'
+        ]);
+
+
+
         $tours = $travel->tours()
 
             ->when( $request->priceFrom, function($query) use ($request){
@@ -29,15 +45,7 @@ class TourController extends Controller
             })
 
             ->when( $request->sortBy, function($query) use ($request){
-                $invalid_sort_by = !in_array( $request->sortBy, ['price']);
-                $invalid_sort_order = !in_array( $request->sortOrder, ['asc', 'desc']);
-
-                if( $invalid_sort_order || $invalid_sort_by ){
-                    return;
-                }
-
                 $query->orderBy( $request->sortBy, $request->sortOrder );
-
             } )
 
             ->orderBy('starting_date')
