@@ -39,10 +39,18 @@ class TourListTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonCount(1, 'data');
-        $response->assertJsonFragment(['price' => 223.56]);
+        $response->assertJsonFragment(['price' => '223.56']);
     }
 
     public function test_tours_list_returns_pagination(){
+        $travel = Travel::factory()->create();
+        Tour::factory(16)->create(['travel_id' => $travel->id ]);
+
+        $response = $this->get('/api/v1/travels/' . $travel->slug . '/tours');
+
+        $response->assertStatus(200);
+        $response->assertJsonCount(10, 'data');
+        $response->assertJsonPath('meta.last_page', 2);
 
     }
 }
