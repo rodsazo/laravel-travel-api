@@ -108,6 +108,35 @@ class TourListTest extends TestCase
 
     }
 
+    public function test_tours_list_filters_by_price_correctly() : void
+    {
+        $travel = Travel::factory()->create();
+        $cheapTour = Tour::factory()->create([
+            'travel_id' => $travel->id,
+            'price' => 100
+        ]);
+        $expensiveTour = Tour::factory()->create([
+            'travel_id' => $travel->id,
+            'price' => 200
+        ]);
+
+        $endpoint = 'api/v1/travels/' . $travel->slug .'/tours';
+
+        // Greater than
+        $request = $this->get( $endpoint . '?priceFrom=150' );
+        $request->assertStatus(200);
+        $request->assertJsonCount(1, 'data');
+        $request->assertJsonMissing(['id' => $cheapTour->id ]);
+        $request->assertJsonFragment(['id' => $expensiveTour->id ]);
+
+        // Lower than
+        $request = $this->get( $endpoint . '?priceTo=150' );
+        $request->assertStatus(200);
+        $request->assertJsonCount(1, 'data');
+        $request->assertJsonMissing(['id' => $expensiveTour->id ]);
+        $request->assertJsonFragment(['id' => $cheapTour->id ]);
+    }
+
     public function test_tours_list_filters_by_starting_date_correctly() : void
     {
         // Prepare data
@@ -183,8 +212,12 @@ class TourListTest extends TestCase
         ]);
 
         $endpoint = 'api/v1/travels/' . $travel->slug .'/tours';
+        $headers  = ['accept' => 'application/json'];
 
-        $response = $this->get( $endpoint . '?dateFrom=123' );
+        $response = $this->get( $endpoint . '?dateFrom=123', $headers );
+        $response->assertStatus(422);
+
+        $response = $this->get( $endpoint . '?priceFrom=abc', $headers );
         $response->assertStatus(422);
 
     }
