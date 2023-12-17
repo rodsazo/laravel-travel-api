@@ -174,4 +174,18 @@ class TourListTest extends TestCase
         $response->assertJsonFragment(['id' => $earlierTour->id ]);
         $response->assertJsonMissing(['id' => $laterTour->id ]);
     }
+
+    function test_tour_list_returns_validation_errors() : void
+    {
+        $travel = Travel::factory()->create();
+        $tour = Tour::factory()->create([
+            'travel_id' => $travel->id
+        ]);
+
+        $endpoint = 'api/v1/travels/' . $travel->slug .'/tours';
+
+        $response = $this->get( $endpoint . '?dateFrom=123' );
+        $response->assertStatus(422);
+
+    }
 }
