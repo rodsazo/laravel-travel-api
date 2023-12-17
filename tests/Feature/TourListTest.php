@@ -107,4 +107,71 @@ class TourListTest extends TestCase
         $response->assertJsonPath('data.2.id', $expensiveTour->id);
 
     }
+
+    public function test_tours_list_filters_by_starting_date_correctly() : void
+    {
+        // Prepare data
+        $travel = Travel::factory()->create();
+        $laterTour = Tour::factory()->create([
+            'travel_id' => $travel->id,
+            'starting_date' => now()->addDays(2),
+            'ending_date' => now()->addDays(4)
+        ]);
+        $earlierTour = Tour::factory()->create([
+            'travel_id' => $travel->id,
+            'starting_date' => now(),
+            'ending_date' => now()->addDays(2)
+        ]);
+
+        $endpoint = 'api/v1/travels/' . $travel->slug .'/tours';
+
+        // Test dateFrom:
+
+        // - Earlier than both
+        $response = $this->get( $endpoint . '?dateFrom=' . now()->subDay() );
+        $response->assertJsonCount(2, 'data');
+        $response->assertJsonFragment(['id' => $earlierTour->id ]);
+        $response->assertJsonFragment(['id' => $laterTour->id ]);
+
+        // - Earlier than one
+        $response = $this->get( $endpoint . '?dateFrom=' . now()->addDays(1));
+        $response->assertJsonCount(1, 'data');
+        $response->assertJsonFragment(['id' => $laterTour->id ]);
+        $response->assertJsonMissing(['id' => $earlierTour->id ]);
+
+        // - Earlier than none
+        $response = $this->get( $endpoint . '?dateFrom=' . now()->addDays(5));
+        $response->assertJsonCount(0, 'data');
+        $response->assertJsonMissing(['id' => $laterTour->id ]);
+        $response->assertJsonMissing(['id' => $earlierTour->id ]);
+
+
+        // Test dateTo:
+
+        // - Later than both
+        $response = $this->get( $endpoint . '?dateTo=' . now()->addDays(3) );
+        $response->assertJsonCount(2, 'data');
+        $response->assertJsonFragment(['id' => $earlierTour->id ]);
+        $response->assertJsonFragment(['id' => $laterTour->id ]);
+
+        // - Later than one
+        $response = $this->get( $endpoint . '?dateTo=' . now()->addDays(1) );
+        $response->assertJsonCount(1, 'data');
+        $response->assertJsonFragment(['id' => $earlierTour->id ]);
+        $response->assertJsonMissing(['id' => $laterTour->id ]);
+
+        // - Later than none
+        $response = $this->get( $endpoint . '?dateTo=' . now()->subDay() );
+        $response->assertJsonCount(0, 'data');
+        $response->assertJsonMissing(['id' => $earlierTour->id ]);
+        $response->assertJsonMissing(['id' => $laterTour->id ]);
+
+        // Test dateFrom and dateTo
+
+        // - Match only one result
+        $response = $this->get( $endpoint . '?dateFrom=' . now()->subDay() . '&dateTo=' . now()->addDay() );
+        $response->assertJsonCount(1, 'data');
+        $response->assertJsonFragment(['id' => $earlierTour->id ]);
+        $response->assertJsonMissing(['id' => $laterTour->id ]);
+    }
 }
