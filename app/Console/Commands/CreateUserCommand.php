@@ -30,7 +30,6 @@ class CreateUserCommand extends Command
      */
     public function handle()
     {
-        // TODO
         $user['name'] = $this->ask('Enter the name of the new user');
         $user['email'] = $this->ask('Enter the email of the new user');
         $user['password'] = $this->secret('Enter the password of the new user');

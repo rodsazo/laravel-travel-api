@@ -9,6 +9,7 @@ use Tests\TestCase;
 
 class LoginTest extends TestCase
 {
+    use RefreshDatabase;
     public function test_login_returns_token(): void
     {
         $user = User::factory()->create();
