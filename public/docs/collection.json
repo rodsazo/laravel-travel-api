@@ -9,12 +9,201 @@
         }
     ],
     "info": {
-        "name": "Laravel",
-        "_postman_id": "bd4326b4-2e7d-4314-837d-4213b5f078fc",
+        "name": "Travel API Documentation",
+        "_postman_id": "2f8c9477-e2e5-4a9e-b7ec-1adc1d970d42",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
     "item": [
+        {
+            "name": "Admin endpoints",
+            "description": "",
+            "item": [
+                {
+                    "name": "POST Travel",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/admin\/travels",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/admin\/travels"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"is_public\":\"\\\"1\\\"\",\"name\":\"\\\"My new travel\\\"\",\"description\":\"\\\"a 5-days 4-nights city tour of Cuzco\\\"\",\"number_of_days\":\"\\\"5\\\"\"}"
+                        },
+                        "description": "Creates a new Travel record."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":{\"id\":\"996a36ca-2693-4901-9c55-7136e68d81d5\",\"name\":\"My new travel 234\",\"slug\":\"my-new-travel-234\", ...}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\"message\":\"The name has already been taken.\",\"errors\":{\"name\":[\"The name has already been taken.\"]}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "POST Tour",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/admin\/travels\/:travel_id\/tours",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/admin\/travels\/:travel_id\/tours",
+                            "variable": [
+                                {
+                                    "id": "travel_id",
+                                    "key": "travel_id",
+                                    "value": "9adb6658-32d5-41a0-9b56-d332186275fd",
+                                    "description": "The ID of the travel."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"\\\"A night-tour of Cuzco\\\"\",\"starting_date\":\"\\\"2023-12-10\\\"\",\"ending_date\":\"\\\"2023-12-20\\\"\",\"price\":\"\\\"123.25\\\"\"}"
+                        },
+                        "description": "Creates a new tour record."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":{\"id\":\"996a36ca-2693-4901-9c55-7136e68d81d5\",\"name\":\"My new tour\",\"starting_date\":\"2023-12-15\", ...}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "PUT Travel",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/admin\/travels\/:travel_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/admin\/travels\/:travel_id",
+                            "variable": [
+                                {
+                                    "id": "travel_id",
+                                    "key": "travel_id",
+                                    "value": "9adb6658-32d5-41a0-9b56-d332186275fd",
+                                    "description": "The ID of the travel."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"is_public\":\"non\",\"name\":\"\\\"My new travel\\\"\",\"description\":\"\\\"a 5-days 4-nights city tour of Cuzco\\\"\",\"number_of_days\":\"\\\"5\\\"\"}"
+                        },
+                        "description": "Updates new Travel record."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":{\"id\":\"996a36ca-2693-4901-9c55-7136e68d81d5\",\"name\":\"My new travel 234\", ...}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\"message\":\"The name has already been taken.\",\"errors\":{\"name\":[\"The name has already been taken.\"]}}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Auth endpoints",
+            "description": "",
+            "item": [
+                {
+                    "name": "POST Login",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/login",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/login"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"irma.huels@example.com\",\"password\":\"SDEaGtzEQw\"}"
+                        },
+                        "description": "Login with the existing user.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"access_token\":\"1|a9ZcYzIrLURVGx6Xe41HKj1CrNsxRxe4pLA2oISo\"}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\"error\": \"The provided credentials are incorrect.\"}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
         {
             "name": "Endpoints",
             "description": "",
@@ -66,146 +255,6 @@
                             "name": ""
                         }
                     ]
-                },
-                {
-                    "name": "POST api\/v1\/admin\/travels",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/admin\/travels",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/admin\/travels"
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"is_public\":false,\"name\":\"quis\",\"description\":\"quidem\",\"number_of_days\":17}"
-                        },
-                        "description": "",
-                        "auth": {
-                            "type": "noauth"
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "POST api\/v1\/admin\/travels\/{travel_id}\/tours",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/admin\/travels\/:travel_id\/tours",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/admin\/travels\/:travel_id\/tours",
-                            "variable": [
-                                {
-                                    "id": "travel_id",
-                                    "key": "travel_id",
-                                    "value": "9adb6658-32d5-41a0-9b56-d332186275fd",
-                                    "description": "The ID of the travel."
-                                }
-                            ]
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"name\":\"yiowuqijvhirntn\",\"starting_date\":\"2023-12-18T21:32:11\",\"ending_date\":\"2031-05-01\",\"price\":316194.96233}"
-                        },
-                        "description": "",
-                        "auth": {
-                            "type": "noauth"
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "PUT api\/v1\/admin\/travels\/{travel_id}",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/admin\/travels\/:travel_id",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/admin\/travels\/:travel_id",
-                            "variable": [
-                                {
-                                    "id": "travel_id",
-                                    "key": "travel_id",
-                                    "value": "9adb6658-32d5-41a0-9b56-d332186275fd",
-                                    "description": "The ID of the travel."
-                                }
-                            ]
-                        },
-                        "method": "PUT",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"is_public\":true,\"name\":\"omnis\",\"description\":\"eaque\",\"number_of_days\":4}"
-                        },
-                        "description": "",
-                        "auth": {
-                            "type": "noauth"
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Handle the incoming request.",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/login",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/login"
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"email\":\"aufderhar.tre@example.net\",\"password\":\"1a=#zZU\\\\KN,k\"}"
-                        },
-                        "description": "",
-                        "auth": {
-                            "type": "noauth"
-                        }
-                    },
-                    "response": []
                 }
             ]
         },
@@ -305,6 +354,12 @@
         }
     ],
     "auth": {
-        "type": "noauth"
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "key",
+                "type": "string"
+            }
+        ]
     }
 }

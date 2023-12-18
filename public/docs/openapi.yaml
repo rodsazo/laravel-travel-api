@@ -1,12 +1,247 @@
 openapi: 3.0.3
 info:
-  title: Laravel
+  title: 'Travel API Documentation'
   description: ''
   version: 1.0.0
 servers:
   -
     url: 'http://localhost'
 paths:
+  /api/v1/admin/travels:
+    post:
+      summary: 'POST Travel'
+      operationId: pOSTTravel
+      description: 'Creates a new Travel record.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '{"data":{"id":"996a36ca-2693-4901-9c55-7136e68d81d5","name":"My new travel 234","slug":"my-new-travel-234", ...}'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The name has already been taken.'
+                  errors:
+                    name:
+                      - 'The name has already been taken.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The name has already been taken.'
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        example:
+                          - 'The name has already been taken.'
+                        items:
+                          type: string
+      tags:
+        - 'Admin endpoints'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                is_public:
+                  type: boolean.
+                  description: ''
+                  example: '"1"'
+                name:
+                  type: string.
+                  description: ''
+                  example: '"My new travel"'
+                description:
+                  type: string.
+                  description: ''
+                  example: '"a 5-days 4-nights city tour of Cuzco"'
+                number_of_days:
+                  type: number.
+                  description: ''
+                  example: '"5"'
+  '/api/v1/admin/travels/{travel_id}/tours':
+    post:
+      summary: 'POST Tour'
+      operationId: pOSTTour
+      description: 'Creates a new tour record.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '{"data":{"id":"996a36ca-2693-4901-9c55-7136e68d81d5","name":"My new tour","starting_date":"2023-12-15", ...}'
+      tags:
+        - 'Admin endpoints'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: number.
+                  description: ''
+                  example: '"A night-tour of Cuzco"'
+                starting_date:
+                  type: date.
+                  description: ''
+                  example: '"2023-12-10"'
+                ending_date:
+                  type: date.
+                  description: ''
+                  example: '"2023-12-20"'
+                price:
+                  type: number.
+                  description: ''
+                  example: '"123.25"'
+    parameters:
+      -
+        in: path
+        name: travel_id
+        description: 'The ID of the travel.'
+        example: 9adb6658-32d5-41a0-9b56-d332186275fd
+        required: true
+        schema:
+          type: string
+  '/api/v1/admin/travels/{travel_id}':
+    put:
+      summary: 'PUT Travel'
+      operationId: pUTTravel
+      description: 'Updates new Travel record.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '{"data":{"id":"996a36ca-2693-4901-9c55-7136e68d81d5","name":"My new travel 234", ...}'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The name has already been taken.'
+                  errors:
+                    name:
+                      - 'The name has already been taken.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The name has already been taken.'
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        example:
+                          - 'The name has already been taken.'
+                        items:
+                          type: string
+      tags:
+        - 'Admin endpoints'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                is_public:
+                  type: boolean.
+                  description: ''
+                  example: non
+                name:
+                  type: string.
+                  description: ''
+                  example: '"My new travel"'
+                description:
+                  type: string.
+                  description: ''
+                  example: '"a 5-days 4-nights city tour of Cuzco"'
+                number_of_days:
+                  type: number.
+                  description: ''
+                  example: '"5"'
+    parameters:
+      -
+        in: path
+        name: travel_id
+        description: 'The ID of the travel.'
+        example: 9adb6658-32d5-41a0-9b56-d332186275fd
+        required: true
+        schema:
+          type: string
+  /api/v1/login:
+    post:
+      summary: 'POST Login'
+      operationId: pOSTLogin
+      description: 'Login with the existing user.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  access_token: 1|a9ZcYzIrLURVGx6Xe41HKj1CrNsxRxe4pLA2oISo
+                properties:
+                  access_token:
+                    type: string
+                    example: 1|a9ZcYzIrLURVGx6Xe41HKj1CrNsxRxe4pLA2oISo
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: 'The provided credentials are incorrect.'
+                properties:
+                  error:
+                    type: string
+                    example: 'The provided credentials are incorrect.'
+      tags:
+        - 'Auth endpoints'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: irma.huels@example.com
+                password:
+                  type: string
+                  description: ''
+                  example: SDEaGtzEQw
+              required:
+                - email
+                - password
+      security: []
   /api/v1/user:
     get:
       summary: ''
@@ -28,164 +263,6 @@ paths:
                     example: Unauthenticated.
       tags:
         - Endpoints
-      security: []
-  /api/v1/admin/travels:
-    post:
-      summary: ''
-      operationId: postApiV1AdminTravels
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                is_public:
-                  type: boolean
-                  description: ''
-                  example: false
-                name:
-                  type: string
-                  description: ''
-                  example: quis
-                description:
-                  type: string
-                  description: ''
-                  example: quidem
-                number_of_days:
-                  type: integer
-                  description: ''
-                  example: 17
-              required:
-                - name
-                - description
-                - number_of_days
-      security: []
-  '/api/v1/admin/travels/{travel_id}/tours':
-    post:
-      summary: ''
-      operationId: postApiV1AdminTravelsTravel_idTours
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: yiowuqijvhirntn
-                starting_date:
-                  type: string
-                  description: 'Must be a valid date.'
-                  example: '2023-12-18T21:32:11'
-                ending_date:
-                  type: string
-                  description: 'Must be a valid date. Must be a date after <code>starting_date</code>.'
-                  example: '2031-05-01'
-                price:
-                  type: number
-                  description: ''
-                  example: 316194.96233
-              required:
-                - name
-                - starting_date
-                - ending_date
-                - price
-      security: []
-    parameters:
-      -
-        in: path
-        name: travel_id
-        description: 'The ID of the travel.'
-        example: 9adb6658-32d5-41a0-9b56-d332186275fd
-        required: true
-        schema:
-          type: string
-  '/api/v1/admin/travels/{travel_id}':
-    put:
-      summary: ''
-      operationId: putApiV1AdminTravelsTravel_id
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                is_public:
-                  type: boolean
-                  description: ''
-                  example: true
-                name:
-                  type: string
-                  description: ''
-                  example: omnis
-                description:
-                  type: string
-                  description: ''
-                  example: eaque
-                number_of_days:
-                  type: integer
-                  description: ''
-                  example: 4
-              required:
-                - name
-                - description
-                - number_of_days
-      security: []
-    parameters:
-      -
-        in: path
-        name: travel_id
-        description: 'The ID of the travel.'
-        example: 9adb6658-32d5-41a0-9b56-d332186275fd
-        required: true
-        schema:
-          type: string
-  /api/v1/login:
-    post:
-      summary: 'Handle the incoming request.'
-      operationId: handleTheIncomingRequest
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  description: 'Must be a valid email address.'
-                  example: aufderhar.tre@example.net
-                password:
-                  type: string
-                  description: ''
-                  example: '1a=#zZU\KN,k'
-              required:
-                - email
-                - password
       security: []
   /api/v1/travels:
     get:
@@ -279,8 +356,23 @@ paths:
             value: first-travel
 tags:
   -
+    name: 'Admin endpoints'
+    description: ''
+  -
+    name: 'Auth endpoints'
+    description: ''
+  -
     name: Endpoints
     description: ''
   -
     name: 'Public endpoints'
     description: ''
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.'
+security:
+  -
+    default: []
