@@ -13,13 +13,13 @@ class RoleMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $name ): Response
+    public function handle(Request $request, Closure $next, string $name): Response
     {
-        if( ! auth()->check() ) {
+        if (! auth()->check()) {
             abort(401);
         }
 
-        if(! auth()->user()->roles()->where('name', $name)->exists() ){
+        if (! auth()->user()->roles()->where('name', $name)->exists()) {
             abort(403);
         }
 

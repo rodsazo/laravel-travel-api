@@ -20,18 +20,18 @@ class LoginController extends Controller
 
         // We checked the provided password against the hashed password in the DB
 
-        if( !$the_user || ! Hash::check($request->password, $the_user->password )){
+        if (! $the_user || ! Hash::check($request->password, $the_user->password)) {
             // If the passwords don't match, we return the 422 status code with a validation error
             return response()->json([
-                'error' => 'The provided credentials are incorrect'
+                'error' => 'The provided credentials are incorrect',
             ], 422);
         }
 
-        $device = substr( $request->userAgent() ?? '', 0, 255 );
+        $device = substr($request->userAgent() ?? '', 0, 255);
         // If passwords are ok, we generate and return a personal access token with Laravel Sanctum
 
         return response()->json([
-            'access_token' => $the_user->createToken( $device )->plainTextToken
+            'access_token' => $the_user->createToken($device)->plainTextToken,
         ]);
     }
 }

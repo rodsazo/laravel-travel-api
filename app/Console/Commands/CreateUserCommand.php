@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -38,31 +38,30 @@ class CreateUserCommand extends Command
 
         $role = Role::where('name', $roleName)->first();
 
-        $validator = Validator::make( $user, [
-            'name' => ['required', 'string','max:255'],
+        $validator = Validator::make($user, [
+            'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', Password::defaults()]
+            'password' => ['required', Password::defaults()],
         ]);
 
-        if( $validator->fails() ) {
-            foreach( $validator->errors()->all() as $error ) {
-                $this->error( $error );
+        if ($validator->fails()) {
+            foreach ($validator->errors()->all() as $error) {
+                $this->error($error);
             }
 
             return -1;
         }
 
-        if( !$role ) {
+        if (! $role) {
             $this->error('Role not found');
 
             return -1;
         }
 
-        DB::transaction( function() use ($user, $role) {
-            $new_user = User::create( $user );
-            $new_user->roles()->attach( $role->id );
+        DB::transaction(function () use ($user, $role) {
+            $new_user = User::create($user);
+            $new_user->roles()->attach($role->id);
         });
-
 
         $this->info('User has been created');
 
