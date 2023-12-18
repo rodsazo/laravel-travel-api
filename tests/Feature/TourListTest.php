@@ -212,12 +212,11 @@ class TourListTest extends TestCase
         ]);
 
         $endpoint = 'api/v1/travels/' . $travel->slug .'/tours';
-        $headers  = ['accept' => 'application/json'];
 
-        $response = $this->get( $endpoint . '?dateFrom=123', $headers );
+        $response = $this->getJson( $endpoint . '?dateFrom=123' );
         $response->assertStatus(422);
 
-        $response = $this->get( $endpoint . '?priceFrom=abc', $headers );
+        $response = $this->getJson( $endpoint . '?priceFrom=abc' );
         $response->assertStatus(422);
 
     }
