@@ -27,10 +27,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('travels', [TravelController::class, 'index']);
 Route::get('travels/{travel:slug}/tours',[TourController::class, 'index']);
 
-Route::prefix('admin')->group( function(){
+Route::prefix('admin')->middleware('auth:sanctum')->group( function(){
     Route::post( 'travels', [Admin\TravelController::class, 'store'] );
 });
 
 Route::post('login', LoginController::class );
-
 
